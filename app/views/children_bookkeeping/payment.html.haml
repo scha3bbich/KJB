@@ -60,8 +60,8 @@
       %th= t('booking.amount')
       %th= t('booking.note1_payment')
       %th= t('booking.note2_payment')
-      %th= t('booking.remarks')
       %th= t('booking.created_by')
+      %th= t('booking.remarks')
         
   %tbody
     - @payments.each do |p|
@@ -96,4 +96,3 @@
       $('#booking_child_number').val(child_data.number.toString())
     });
   });
-

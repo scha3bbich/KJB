@@ -122,6 +122,10 @@ class ScoutsBookkeepingController < ApplicationController
     @s_account_date_disbursements.each do |e| 
       e.update('cleared' => true)
     end
+  
+  def scout_data
+    @scout = Scout.find(params[:scout_id])
+  end
     
     respond_to do |format|
       format.html{ redirect_to scouts_bookkeeping_daily_closing_path, notice: 'Ausgelegtes Geld als erledigt markiert.'} 

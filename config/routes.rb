@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'scouts_bookkeeping/export_giro'
   get 'scouts_bookkeeping/daily_closing'
   get 'scouts_bookkeeping/clear_disbursement'
+  get 'scouts_bookkeeping/scout_data/:scout_id' => 'scouts_bookkeeping#scout_data'
   
   post 'bookings/create_payment' => 'bookings#create_payment', as: :create_payment
   post 'bookings/create_transfer' => 'bookings#create_transfer', as: :create_transfer
