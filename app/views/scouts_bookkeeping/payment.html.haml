@@ -74,7 +74,7 @@
 
 :javascript
   update_scout = function() {
-    scout_id = '#booking_scout_id';
+    scout_id = $('#booking_scout_id').val();
     $.get('/scouts_bookkeeping/scout_data/'+scout_id, function(scout_data, textStatus) {
       $('#booking_current_balance').val(scout_data.account_balance);
     });
@@ -82,3 +82,4 @@
   $(document).ready( function() {
     $('#booking_scout_id').on("input", update_scout);
   }); 
+
