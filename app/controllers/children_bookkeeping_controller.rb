@@ -16,6 +16,10 @@ class ChildrenBookkeepingController < ApplicationController
     @m_c_account_sum = @m_account_balance + @c_account_balance
   end
   
+  def personal_transfer
+    @transfers = Booking.where("note1 = ?", "Überweisung")
+  end
+  
   def child_data
     @child = Child.find(params[:child_id])
   end

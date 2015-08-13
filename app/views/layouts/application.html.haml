@@ -51,6 +51,7 @@
               %li= link_to t('pages.scouts_account.overview'), scouts_bookkeeping_index_path
               %li= link_to t('pages.scouts_account.input'), scouts_bookkeeping_input_path
               %li= link_to t('pages.scouts_account.payment'), scouts_bookkeeping_payment_path
+              %li= link_to t('pages.transfer.title'), scouts_bookkeeping_personal_transfer_path
           %li{:class => "dropdown #{'active' if ['shop', 'child_bookkeeping'].include? params[:controller]}"}
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
               = t('pages.children_bookkeeping.title')
@@ -59,6 +60,7 @@
               %li= link_to t('pages.shop.title'), :shop
               %li= link_to t('pages.children_bookkeeping.payment'), :children_bookkeeping_payment
               %li= link_to t('pages.transfer.title_account'), :children_bookkeeping_transfer
+              %li= link_to t('pages.transfer.title'), children_bookkeeping_personal_transfer_path
           %li{:class => "dropdown #{'active' if ['children', 'tents', 'scouts', 'accounts', 'users', 'import'].include? params[:controller]}"}
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
               = t('pages.data')

@@ -98,6 +98,11 @@ class ScoutsBookkeepingController < ApplicationController
     redirect_to :scouts_bookkeeping_input
   end
   
+  def personal_transfer
+    @transfers = Booking.where("note1 = ?", "Überweisung")
+    @scouts = Scout.all
+  end
+  
   def export
     account_cash = Account.find_by_name('Gruppenleiterkasse')
     @csv = Booking.to_csv({account: account_cash}, {})

@@ -1,0 +1,89 @@
+.page-header
+  %h1
+    = t('pages.transfer.title')
+    %small= session[:date]
+
+.well.col-md-12
+  = form_for :booking, url: create_personal_transfer_path, method: :post do |f|
+    .col-md-4
+      .form-group
+        = f.label t('controller.scouts')
+        = f.collection_select(:scout1_id, @scouts, :id, :full_name, {}, class: "form-control")   
+      .form-group
+        = f.label t('shop.current_balance')
+        .input-group#form-control
+          %span.input-group-addon#form-control
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :scout1_current_balance, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: 'form-control', readonly: true
+    .col-md-4
+      .form-group
+        = f.label t('controller.scouts')
+        = f.collection_select(:scout2_id, @scouts, :id, :full_name, {}, class: "form-control")   
+      .form-group
+        = f.label t('shop.current_balance')
+        .input-group#form-control
+          %span.input-group-addon#form-control
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :scout2_current_balance, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: 'form-control', readonly: true    
+    .col-md-4
+      .form-group
+        = f.label t('booking.amount')
+        .input-group
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :amount, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: "form-control"
+    .col-md-3
+      .form-group
+        = f.label t('booking.remarks')
+        = f.text_area :remarks, class: "form-control"
+      .form-group 
+        = f.submit t('buttons.send'), class: 'btn btn-primary'
+
+
+%table.table.table-bordered.table-condensed.table-hover
+  %thead
+    %tr
+      %th= t('booking.accounting_number')
+      %th= t('booking.date')
+      %th= t('booking.account')
+      %th= t('booking.amount')
+      %th= t('booking.note1_payment')
+      %th= t('booking.note2_payment')
+      %th= t('booking.created_by')
+      %th= t('booking.remarks')
+        
+  %tbody
+    - @transfers.each do |p|
+      %tr
+        = form_for p do |f| 
+          %td= p.accounting_number
+          %td= p.date.strftime "%d.%m.%Y"
+          %td
+            - if p.account
+              = p.account.name
+          %td= number_to_currency p.amount
+          %td= p.note1
+          %td= p.note2
+          %td
+            - if p.created_by
+              = p.created_by.name
+          %td
+            = p.remarks
+
+:javascript
+  update_scout1 = function() {
+    scout_id = $('#booking_scout1_id').val();
+    $.get('/scouts_bookkeeping/scout_data/'+scout_id, function(scout_data, textStatus) {
+      $('#booking_scout1_current_balance').val(scout_data.account_balance);
+    });
+  };
+  update_scout2 = function() {
+    scout_id = $('#booking_scout2_id').val();
+    $.get('/scouts_bookkeeping/scout_data/'+scout_id, function(scout_data, textStatus) {
+      $('#booking_scout2_current_balance').val(scout_data.account_balance);
+    });
+  };
+  $(document).ready( function() {
+    $('#booking_scout2_id').on("input", update_scout2);
+    $('#booking_scout1_id').on("input", update_scout1);
+  }); 

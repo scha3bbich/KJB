@@ -168,6 +168,45 @@ class BookingsController < ApplicationController
     
   end
 
+  def create_personal_transfer
+    pp = params[:booking]
+    bparams = {}
+    bparams[:created_by] = User.find_by_name(session[:user])
+    bparams[:date] = Date.strptime(session[:date], "%d.%m.%Y")
+    bparams[:remarks] = pp[:remarks]
+    bparams[:amount] = pp[:amount].to_f
+    amount2 = - pp[:amount].to_f
+    accounting_number = 0
+    
+    if pp.include? :child1_id
+      # Überweisung zwischen Kindern
+      child1 = Child.find(pp[:child1_id])
+      child2 = Child.find(pp[:child2_id])
+      account1_id = child1.account.account.id
+      account2_id = child2.account.account.id
+      note_1 = child2.full_name.to_s
+      note_2 = child1.full_name.to_s  
+    elsif pp.include? :scout1_id
+      # Überweisung zwischen Gruppenleitern
+      scout1 = Scout.find(pp[:scout1_id])
+      scout2 = Scout.find(pp[:scout2_id])
+      account1_id = scout1.account.account.id
+      account2_id = scout2.account.account.id
+      note_1 = scout2.full_name.to_s
+      note_2 = scout1.full_name.to_s      
+    end
+        
+    @booking1 = Booking.new(bparams.merge(account_id: account1_id, accounting_number: accounting_number, note1: "Überweisung", note2: note_1))
+    @booking2 = Booking.new(bparams.merge(account_id: account2_id, accounting_number: accounting_number, note1: "Überweisung", note2: note_2, amount: amount2))
+  
+    if @booking1.valid? and @booking2.valid?
+      @booking1.save
+      @booking2.save
+      redirect_to :back, notice: "Transfer was successfully created."
+    else
+      redirect_to :back, error: "Could not save the transfer due to an error."
+    end  
+  end
 
   # DELETE /bookings/1
   # DELETE /bookings/1.json

@@ -1,0 +1,113 @@
+.page-header
+  %h1
+    = t('pages.transfer.title')
+    %small= session[:date]
+
+.well.col-md-12
+  = form_for :booking, url: create_personal_transfer_path, method: :post do |f|
+    .col-md-4
+      .form-group
+        = f.label t('children.number')
+        = f.autocomplete_field :child1_number, shop_autocomplete_child_number_path, update_elements: {}, 'data-id-element' => '#booking_child_id', class: 'form-control'         
+      .form-group
+        = f.label t('shop.child')
+        = f.autocomplete_field :child1_full_name, shop_autocomplete_child_first_name_path, update_elements: {}, 'data-id-element' => '#booking_child_id', class: 'form-control'
+        = f.text_field :child1_id, hidden: true  
+      .form-group
+        = f.label t('shop.current_balance')
+        .input-group#form-control
+          %span.input-group-addon#form-control
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :child1_current_balance, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: 'form-control', readonly: true
+    .col-md-4
+      .form-group
+        = f.label t('children.number')
+        = f.autocomplete_field :child2_number, shop_autocomplete_child_number_path, update_elements: {}, 'data-id-element' => '#booking_child_id', class: 'form-control'         
+      .form-group
+        = f.label t('shop.child')
+        = f.autocomplete_field :child2_full_name, shop_autocomplete_child_first_name_path, update_elements: {}, 'data-id-element' => '#booking_child_id', class: 'form-control'
+        = f.text_field :child2_id, hidden: true  
+      .form-group
+        = f.label t('shop.current_balance')
+        .input-group#form-control
+          %span.input-group-addon#form-control
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :child2_current_balance, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: 'form-control', readonly: true    
+    .col-md-4
+      .form-group
+        = f.label t('booking.amount')
+        .input-group
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-euro
+          = f.text_field :amount, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: "form-control"
+    .col-md-3
+      .form-group
+        = f.label t('booking.remarks')
+        = f.text_area :remarks, class: "form-control"
+      .form-group 
+        = f.submit t('buttons.send'), class: 'btn btn-primary'
+
+
+%table.table.table-bordered.table-condensed.table-hover
+  %thead
+    %tr
+      %th= t('booking.accounting_number')
+      %th= t('booking.date')
+      %th= t('booking.account')
+      %th= t('booking.amount')
+      %th= t('booking.note1_payment')
+      %th= t('booking.note2_payment')
+      %th= t('booking.created_by')
+      %th= t('booking.remarks')
+        
+  %tbody
+    - @transfers.each do |p|
+      %tr
+        = form_for p do |f| 
+          %td= p.accounting_number
+          %td= p.date.strftime "%d.%m.%Y"
+          %td
+            - if p.account
+              = p.account.name
+          %td= number_to_currency p.amount
+          %td= p.note1
+          %td= p.note2
+          %td
+            - if p.created_by
+              = p.created_by.name
+          %td
+            = p.remarks
+
+:javascript
+  $('#booking_child1_number').bind('railsAutocomplete.select', function(event, data) {
+    child_id = data.item.id;
+    $.get('/children_bookkeeping/child_data/'+child_id, function(child_data, textStatus) {
+      $('#booking_child1_current_balance').val(child_data.account_balance);
+      $('#booking_child1_full_name').val(child_data.full_name)
+      $('#booking_child1_id').val(child_data.id)
+    });
+  }); 
+  $('#booking_child1_full_name').bind('railsAutocomplete.select', function(event, data) {
+    child_id = data.item.id;
+    $.get('/children_bookkeeping/child_data/'+child_id, function(child_data, textStatus) {
+      $('#booking_child1_current_balance').val(child_data.account_balance);
+      $('#booking_child1_number').val(child_data.number.toString())
+      $('#booking_child1_id').val(child_data.id)
+    });
+  });
+  $('#booking_child2_number').bind('railsAutocomplete.select', function(event, data) {
+    child_id = data.item.id;
+    $.get('/children_bookkeeping/child_data/'+child_id, function(child_data, textStatus) {
+      $('#booking_child2_current_balance').val(child_data.account_balance);
+      $('#booking_child2_full_name').val(child_data.full_name)
+      $('#booking_child2_id').val(child_data.id)
+    });
+  }); 
+  $('#booking_child2_full_name').bind('railsAutocomplete.select', function(event, data) {
+    child_id = data.item.id;
+    $.get('/children_bookkeeping/child_data/'+child_id, function(child_data, textStatus) {
+      $('#booking_child2_current_balance').val(child_data.account_balance);
+      $('#booking_child2_number').val(child_data.number.toString())
+      $('#booking_child2_id').val(child_data.id)
+    });
+  });
