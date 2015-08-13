@@ -34,6 +34,14 @@ class MainBookkeepingController < ApplicationController
     render text: "OK"
   end
   
+  def reset_cash
+    session[:main_account_cash] = {}
+    
+    respond_to do |format|
+      format.html{redirect_to main_bookkeeping_daily_closing_path} 
+    end 
+  end
+  
   def export
     account = Account.find_by_name('Lagerkasse Bar')
     @csv = Booking.to_csv({account: account}, {})

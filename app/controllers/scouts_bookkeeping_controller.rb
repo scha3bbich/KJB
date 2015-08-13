@@ -69,6 +69,14 @@ class ScoutsBookkeepingController < ApplicationController
     render text: "OK"
   end
 
+  def reset_cash
+    session[:scouts_account_cash] = {}
+    
+    respond_to do |format|
+      format.html{redirect_to scouts_bookkeeping_daily_closing_path} 
+    end 
+  end
+
   def input
     date = Date.strptime(session[:date], "%d.%m.%Y")
     @scout_consumptions = ScoutConsumption.where(date: date).joins(:scout)

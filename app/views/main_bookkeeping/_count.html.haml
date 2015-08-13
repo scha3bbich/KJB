@@ -53,6 +53,12 @@
       .form-group
         = f.label t('pages.count_cash.total')
         = f.number_field 'total', readonly: true, class: "form-control count-sum", value: @count['total']
+  .col-md-2
+  .col-md-2
+    %h6
+      Zurücksetzen
+    .btn-group
+      = link_to "Reset", main_bookkeeping_reset_cash_path, class: "btn btn-info"
 
 :javascript
   compute_sum = function() {

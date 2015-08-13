@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get 'scouts_bookkeeping/daily_closing'
   get 'scouts_bookkeeping/clear_disbursement'
   get 'scouts_bookkeeping/scout_data/:scout_id' => 'scouts_bookkeeping#scout_data'
+  get 'scouts_bookkeeping/reset_cash'
   
   post 'bookings/create_payment' => 'bookings#create_payment', as: :create_payment
   post 'bookings/create_transfer' => 'bookings#create_transfer', as: :create_transfer
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
   get 'main_bookkeeping/export'
   get 'main_bookkeeping/daily_closing'
   get 'main_bookkeeping/clear_disbursement'
+  get 'main_bookkeeping/reset_cash'
   
   get 'shop' => 'shop#index', as: :shop
   post 'shop/select_time_of_day', as: :select_time_of_day
