@@ -46,12 +46,14 @@ class ImportController < ApplicationController
     @csv = CSV.new(@filecontent, headers: true, col_sep: ",")
     @content = @csv.to_a.map {|row| row.to_hash }
     @content.each do |row|
-      data = {
-        first_name: row["Vorname"],
-        last_name: row["Nachname"],
-        birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%m/%d/%Y')
-      }
-      scout = Scout.create(data)
+      if(row["Aktiv"] == '1')
+        data = {
+          first_name: row["Vorname"],
+          last_name: row["Nachname"],
+          birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%m/%d/%Y')
+        }
+        scout = Scout.create(data)
+      end
     end
     flash[:notice] = "Import successful"
   end
