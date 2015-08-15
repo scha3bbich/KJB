@@ -71,7 +71,7 @@
           %td= p.date.strftime "%d.%m.%Y"
           %td
             - if p.account
-              = Child.find(ChildAccount.find(p.account.actable_id).child_id).number
+              = p.account.specific.child.number
           %td
             - if p.account
               = p.account.name
