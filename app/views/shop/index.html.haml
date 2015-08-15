@@ -122,6 +122,7 @@
 %table.table.table-bordered.table-condensed.table-hover
   %thead
     %tr
+      %th= t('children.number')
       %th Name
       %th
         = t('goods.soft_drink')
@@ -131,8 +132,9 @@
       %th
       %th
       %th= t('goods.total') 
-      %th Balance
+      %th= t('overview.balance')
     %tr
+      %th
       %th= t('pages.childs_account.total')
       %th= @child_consumptions.map{|sc| sc.soft_drink.to_i}.sum
       %th= number_to_currency @child_consumptions.map{|sc| sc.other.to_f }.sum
@@ -146,6 +148,7 @@
     - @child_consumptions.each do |c|
       %tr
         = form_for c, {url: update_child_consumption_path(c)} do |f| 
+          %td= c.child.number
           %td= link_to c.child.full_name, c.child
           %td.input-group-sm= f.number_field :soft_drink, class: 'form-control consumption_amount'
           %td.input-group-sm= f.text_field :other, data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: 'form-control consumption_other'

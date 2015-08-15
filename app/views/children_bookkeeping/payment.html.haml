@@ -54,21 +54,24 @@
 %table.table.table-bordered.table-condensed.table-hover
   %thead
     %tr
-      %th= t('booking.accounting_number')
       %th= t('booking.date')
+      %th= t('children.number')
       %th= t('booking.account')
       %th= t('booking.amount')
       %th= t('booking.note1_payment')
       %th= t('booking.note2_payment')
       %th= t('booking.created_by')
+      %th= t('booking.accounting_number')      
       %th= t('booking.remarks')
         
   %tbody
     - @payments.each do |p|
       %tr
         = form_for p do |f| 
-          %td= p.accounting_number
           %td= p.date.strftime "%d.%m.%Y"
+          %td
+            - if p.account
+              = Child.find(ChildAccount.find(p.account.actable_id).child_id).number
           %td
             - if p.account
               = p.account.name
@@ -78,8 +81,8 @@
           %td
             - if p.created_by
               = p.created_by.name
-          %td
-            = p.remarks
+          %td= p.accounting_number
+          %td= p.remarks
 
 :javascript
   $('#booking_child_number').bind('railsAutocomplete.select', function(event, data) {

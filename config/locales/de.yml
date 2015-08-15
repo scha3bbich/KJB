@@ -154,6 +154,8 @@ de:
     pork: 'Schwein'
     turkey: 'Pute'
     corn: Mais
+    other: 'Süßigkeiten'
+    total: 'Summe'
     
   settings:
     start_date: "Anfangsdatum"
