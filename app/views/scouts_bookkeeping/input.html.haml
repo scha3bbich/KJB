@@ -36,7 +36,7 @@
       %th
       %th
       %th= t('goods.total') 
-      %th Balance
+      -# %th Balance
     %tr
       %th= t('pages.scouts_account.total')
       %th= @scout_consumptions.map{|sc| sc.beer.to_i}.sum
@@ -49,7 +49,7 @@
       %th
       %th
       %th= number_to_currency @scout_consumptions.each.map { |sc| sc.total }.sum
-      %th= number_to_currency @scout_consumptions.each.map { |sc| sc.scout.account_balance }.sum
+      -# %th= number_to_currency @scout_consumptions.each.map { |sc| sc.scout.account_balance }.sum
       
   %tbody
     - @scout_consumptions.each do |c|
@@ -71,7 +71,7 @@
             %button.btn.btn-sm.btn-primary
               %span.glyphicon.glyphicon-ok
           %td= number_to_currency c.total
-          %td= number_to_currency c.scout.account_balance
+          -# %td= number_to_currency c.scout.account_balance
           
           
 

@@ -152,7 +152,7 @@
       %th
       %th
       %th= t('goods.total') 
-      %th= t('overview.balance')
+      -# %th= t('overview.balance')
     %tr
       %th
       %th= t('pages.childs_account.total')
@@ -162,7 +162,7 @@
       %th
       %th
       %th= number_to_currency @child_consumptions.each.map { |sc| sc.total }.sum
-      %th= number_to_currency @child_consumptions.each.map { |sc| sc.child.account_balance }.sum
+      -# %th= number_to_currency @child_consumptions.each.map { |sc| sc.child.account_balance }.sum
       
   %tbody
     - @child_consumptions.each do |c|
@@ -180,7 +180,7 @@
             %span.label.label-default= c.edited_by
           %td= f.submit t('buttons.save'), class: "btn btn-default"
           %td= number_to_currency c.total
-          %td= number_to_currency c.child.account_balance
+          -# %td= number_to_currency c.child.account_balance
 
 
 :javascript
