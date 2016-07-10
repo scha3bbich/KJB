@@ -198,8 +198,8 @@ class BookingsController < ApplicationController
     bparams[:created_by] = User.find_by_name(session[:user])
     bparams[:date] = Date.strptime(session[:date], "%d.%m.%Y")
     bparams[:remarks] = pp[:remarks]
-    bparams[:amount] = pp[:amount].to_f
-    amount2 = - pp[:amount].to_f
+    bparams[:amount] = - pp[:amount].to_f
+    amount2 = pp[:amount].to_f
     accounting_number = 0
     
     if pp.include? :child1_id
