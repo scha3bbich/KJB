@@ -60,10 +60,10 @@
     
     .col-md-2
       .form-group
-        = f.label t('shop.seventy_cent')
+        = f.label t('shop.eighty_cent')
         .input-group#form-control
-          %span.input-group-addon#form-control= number_to_currency 0.7
-          = f.number_field :seventy_cent, class: 'form-control new-input'
+          %span.input-group-addon#form-control= number_to_currency 0.8
+          = f.number_field :eighty_cent, class: 'form-control new-input'
       .form-group
         = f.label t('shop.sixty_cent')
         .input-group#form-control
@@ -212,7 +212,7 @@
       $("#child_consumption_thirty_cent").val() * 0.3 +
       $("#child_consumption_forty_cent").val() * 0.4 +
       $("#child_consumption_sixty_cent").val() * 0.6 +
-      $("#child_consumption_seventy_cent").val() * 0.7 +
+      $("#child_consumption_eighty_cent").val() * 0.8 +
       $("#child_consumption_soft_drink").val() * "#{Good.get_price(:soft_drink, session[:date])}" +
       other;
     $('#child_consumption_total').val(sum);

@@ -13,7 +13,7 @@ class ShopController < ApplicationController
     
   def new_entry
     cc_params = params[:child_consumption] 
-    other = cc_params[:other].to_f + cc_params[:fifty_cent].to_i * 0.5 + cc_params[:twenty_cent].to_i * 0.2 + cc_params[:ten_cent].to_i * 0.1 + cc_params[:five_cent].to_i * 0.05
+    other = cc_params[:other].to_f + cc_params[:eighty_cent].to_i * 0.8 + cc_params[:seventy_cent].to_i * 0.7 + cc_params[:sixty_cent].to_i * 0.6 + cc_params[:fifty_cent].to_i * 0.5 + cc_params[:forty_cent].to_i * 0.4 + cc_params[:thirty_cent].to_i * 0.3 + cc_params[:twentyfive_cent].to_i * 0.25 + cc_params[:twenty_cent].to_i * 0.2 + cc_params[:ten_cent].to_i * 0.1 + cc_params[:five_cent].to_i * 0.05
     date = Date.strptime(session[:date], "%d.%m.%Y")
     ChildConsumption.create(child_id: cc_params[:child_id], soft_drink: cc_params[:soft_drink], other: other, time_of_day: session[:time_of_day], created_by: session[:user], date: date)
     redirect_to :shop
