@@ -6,12 +6,12 @@
 
 
 .col-md-12
-  #example-chart
+  #drink-chart
     :javascript
       $(function () {
-        $('#example-chart').highcharts({
+        $('#drink-chart').highcharts({
           title: {
-              text: 'Gruppenleiter Konsum',
+              text: 'Gruppenleiter Getränke Konsum',
               x: -20 //center
           },
           xAxis: {
@@ -38,6 +38,39 @@
               data: #{@beer_consumption.to_json}
           },{ name: 'Anti',
               data: #{@softdrink_consumption.to_json}
+          }]
+        });
+      });
+
+.col-md-12
+  #food-chart
+    :javascript
+      $(function () {
+        $('#food-chart').highcharts({
+          title: {
+              text: 'Gruppenleiter Essen Konsum',
+              x: -20 //center
+          },
+          xAxis: {
+              categories: #{@dates.to_json}
+          },
+          yAxis: {
+              title: {
+                  text: 'Anzahl'
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
+              borderWidth: 0
+          },
+          series: [{
           },{ name: 'Wurst',
               data: #{@sausage_consumption.to_json}
           },{ name: 'Schwein',
@@ -48,7 +81,7 @@
               data: #{@corn_consumption.to_json}
           }]
         });
-      });
+      }); 
       
 .well.col-md-6
   %h3
