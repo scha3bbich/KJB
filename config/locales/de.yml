@@ -165,14 +165,14 @@ de:
     soft_drink: "Getränk"
     child: "Kind"
     total: "Gesamt"
-    seventy_cent: KitKat
+    eighty_cent: KitKat, Carazza
     sixty_cent: Schokoriegel
     fifty_cent: 50 cent
-    forty_cent: KinderCountry
+    forty_cent: KinderCountry, Knoppers
     thirty_cent: Schokoriegel
     twentyfive_cent: Schlangen
-    twenty_cent: Ketten
-    ten_cent: CenterShock
+    twenty_cent: Ketten, Mentos
+    ten_cent: CenterShock, Brausebrocken
     five_cent: Haribo
     other: "Anderes"
     please_select_time_of_day: "Tageszeit auswählen"
