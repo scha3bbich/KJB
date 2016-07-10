@@ -62,6 +62,8 @@ class BookingsController < ApplicationController
     params[:booking][:created_by] = User.find_by_name(session[:user])
     params[:booking][:date] = Date.strptime(session[:date], "%d.%m.%Y")
     params[:booking][:accounting_number] = Booking.where(account_id: params[:booking][:account_id]).map {|b| b.accounting_number}.compact.max.to_i+1
+    
+    @main_account = Account.find_by_name('Lagerkasse Bar')
       
     # Sub-Booking Parameter
     if (params[:booking][:sub_bookings_attributes])
@@ -70,6 +72,20 @@ class BookingsController < ApplicationController
           value[:amount] = - value[:amount].to_f
         end
         value.delete :sign
+      end
+      # wenn Lagerkasse, dann Gutschrift GL-Kasse
+      @scout_account = Account.find_by_name('Gruppenleiterkasse')
+      if params[:booking][:account] == @main_account
+        gparams = {}
+        gparams[:amount] = - params[:booking][:amount]
+        gparams[:date] = params[:booking][:date]
+        gparams[:created_by] = params[:booking][:created_by]
+        gparams[:account] = @scout_account
+        gparams[:accounting_number] = Booking.where(account_id: @scout_account).map {|b| b.accounting_number}.compact.max.to_i+1
+        gparams[:note1] = "Gutschrift Lagerkasse GL, Quittungsnr:"
+        gparams[:note2] = params[:booking][:accounting_number]
+
+        @booking2 = Booking.new(gparams)
       end
     end
         
@@ -80,13 +96,20 @@ class BookingsController < ApplicationController
     params[:booking].delete :sign
     @booking = Booking.new(params[:booking].permit!)
 
-    respond_to do |format|
-      if @booking.save
-        format.html { redirect_to :back, notice: 'Booking was successfully created.' }
-        format.json { render :show, status: :created, location: @booking }
+    if params[:booking][:account] == @main_account
+      if @booking.valid? and @booking2.valid?
+        @booking.save
+        @booking2.save
+        redirect_to :back, notice: "Buchung wurde von Lagerkasse in GL-Kasse gebucht."
       else
-        format.html { render :new }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
+        redirect_to :back, notice: "Could not save the payment due to an error."
+      end
+    else
+      if @booking.valid?
+       @booking.save
+       redirect_to :back, notice: "Booking was successfully created."
+      else
+       redirect_to :back, notice: "Could not save the payment due to an error."        
       end
     end
   end
