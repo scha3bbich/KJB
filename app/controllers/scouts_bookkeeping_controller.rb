@@ -73,7 +73,7 @@ class ScoutsBookkeepingController < ApplicationController
     session[:scouts_account_cash] = {}
     
     respond_to do |format|
-      format.html{redirect_to scouts_bookkeeping_daily_closing_path} 
+      format.html{redirect_to :back} 
     end 
   end
 

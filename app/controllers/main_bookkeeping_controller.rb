@@ -38,7 +38,7 @@ class MainBookkeepingController < ApplicationController
     session[:main_account_cash] = {}
     
     respond_to do |format|
-      format.html{redirect_to main_bookkeeping_daily_closing_path} 
+      format.html{redirect_to :back} 
     end 
   end
   
