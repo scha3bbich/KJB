@@ -58,6 +58,20 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
   
+  def import_scouts_from_xml
+    @filecontent = @file.read
+    @data = Hash.from_xml @filecontent
+    @data["RECORDS"]["RECORD"].each do |row|
+      data = {
+          first_name: row["Vorname"],
+          last_name: row["Nachname"],
+          birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%m/%d/%Y')
+        }
+      scout = Scout.create(data)
+    end
+    flash[:notice] = "Import successful"
+  end  
+  
   def import_children_from_xml
     @filecontent = @file.read
     @data = Hash.from_xml @filecontent
