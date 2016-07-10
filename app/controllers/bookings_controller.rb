@@ -4,7 +4,8 @@ class BookingsController < ApplicationController
   # GET /bookings
   # GET /bookings.json
   def index
-    @bookings = Booking.all.order('date DESC')
+    @date = Date.strptime(session[:date], "%d.%m.%Y")
+    @bookings = Booking.all.where(date: @date).order('date DESC')
   end
 
   # GET /bookings/1
