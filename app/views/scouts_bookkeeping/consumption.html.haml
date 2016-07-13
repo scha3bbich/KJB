@@ -1,0 +1,19 @@
+.page-header
+  %h1
+    = t('pages.scouts_account.title2')
+    %small= session[:date]
+
+.col-md-12
+  %table.table.table-bordered.table-condensed.table-hover
+    %thead
+      %tr
+        %th Datum
+        %th Verbrauch
+        %th Kontostand
+
+    %tbody
+      - @dates.each do |date|
+        %tr
+          %td= date.strftime "%d.%m.%Y"
+          %td= number_to_currency @consumption[date]
+          %td= number_to_currency @balance[date]

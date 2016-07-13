@@ -28,6 +28,21 @@ class ScoutsBookkeepingController < ApplicationController
     @s_account_giro_balance = Booking.where(account: s_account_giro).sum(:amount) 
   end
 
+  def consumption
+    @scouts = Scout.all
+    @dates = (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)).to_a
+    puts @dates
+    @consumption = {}
+    @dates.each do |date|
+      @consumption[date] = ScoutConsumption.where(date: date).each.map { |sc| sc.total }.sum
+    end
+    @balance = {}
+    @balance[ @dates.first ] = 0
+    @dates.take(@dates.length-1).each_with_index.map {|e,i| [e, @dates[i+1]]}.each do |beforedate, date|  
+      @balance[date] = @balance[beforedate] - @consumption[date]
+    end    
+  end
+
   def billing
     @date = Date.strptime(session[:date], "%d.%m.%Y")
     @s_account_cash = Account.find_by_name('Gruppenleiterkasse')

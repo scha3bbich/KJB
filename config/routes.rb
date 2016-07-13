@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   
   get 'scouts_bookkeeping/index'
   get 'scouts_bookkeeping/index2'
+  get 'scouts_bookkeeping/consumption'
   get 'scouts_bookkeeping/billing'
   get 'scouts_bookkeeping/input'
   get 'scouts_bookkeeping/payment'  
