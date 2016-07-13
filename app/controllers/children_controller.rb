@@ -18,7 +18,7 @@ class ChildrenController < ApplicationController
   end
 
   def identify_new
-    @children = Child.includes(:tent).order("tents.number ASC")
+    @children = Child.includes(:tent).order("tents.number, last_name")
     @children.each_with_index do |child, i|
       child.update('number' => i+1)
     end
