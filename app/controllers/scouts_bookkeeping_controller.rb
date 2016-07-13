@@ -3,17 +3,6 @@ class ScoutsBookkeepingController < ApplicationController
   
   def index
     @scouts = Scout.all
-    @dates = (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)).to_a
-    puts @dates
-    @consumption = {}
-    @dates.each do |date|
-      @consumption[date] = ScoutConsumption.where(date: date).each.map { |sc| sc.total }.sum
-    end
-    @balance = {}
-    @balance[ @dates.first ] = 0
-    @dates.take(@dates.length-1).each_with_index.map {|e,i| [e, @dates[i+1]]}.each do |beforedate, date|  
-      @balance[date] = @balance[beforedate] - @consumption[date]
-    end
   end
   
   def index2
@@ -29,7 +18,6 @@ class ScoutsBookkeepingController < ApplicationController
   end
 
   def consumption
-    @scouts = Scout.all
     @dates = (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)).to_a
     puts @dates
     @consumption = {}
@@ -41,6 +29,11 @@ class ScoutsBookkeepingController < ApplicationController
     @dates.take(@dates.length-1).each_with_index.map {|e,i| [e, @dates[i+1]]}.each do |beforedate, date|  
       @balance[date] = @balance[beforedate] - @consumption[date]
     end    
+  end
+
+  def overview
+    @random = Scout.offset(rand(Scout.count)).first
+    @name = @random.last_name.chars.first
   end
 
   def billing

@@ -1,0 +1,13 @@
+%head
+  %title test
+  %meta{:content => "10", "http-equiv" => "refresh"}
+
+.col-md-14
+  .overview-name
+    %font
+      = @random.first_name
+    %font
+      = @name
+  .overview-name
+    %font
+      = number_to_currency @random.account_balance

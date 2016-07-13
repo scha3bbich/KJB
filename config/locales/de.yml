@@ -37,7 +37,7 @@ de:
       title: 'Gruppenleiterkasse'
       title2: 'Gruppenleiter'
       billing: 'Abrechnung'
-      overview_balance: 'Übersicht GL'
+      overview: 'Kontostand'
       overview_consumption: 'Übersicht Verbrauch'
       index: 'Übersicht Kasse'
       input: 'Verbrauch eingeben'
