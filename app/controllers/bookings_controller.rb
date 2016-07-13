@@ -62,9 +62,7 @@ class BookingsController < ApplicationController
     params[:booking][:created_by] = User.find_by_name(session[:user])
     params[:booking][:date] = Date.strptime(session[:date], "%d.%m.%Y")
     params[:booking][:accounting_number] = Booking.where(account_id: params[:booking][:account_id]).map {|b| b.accounting_number}.compact.max.to_i+1
-    
-    @main_account = Account.find_by_name('Lagerkasse Bar')
-      
+       
     # Sub-Booking Parameter
     if (params[:booking][:sub_bookings_attributes])
       pparams[:sub_bookings_attributes].each do |key, value|
@@ -72,23 +70,32 @@ class BookingsController < ApplicationController
           value[:amount] = - value[:amount].to_f
         end
         value.delete :sign
-      end
-      # wenn Lagerkasse, dann Gutschrift GL-Kasse
-      @scout_account = Account.find_by_name('Gruppenleiterkasse')
-      if params[:booking][:account] == @main_account
-        gparams = {}
-        gparams[:amount] = - params[:booking][:amount]
-        gparams[:date] = params[:booking][:date]
-        gparams[:created_by] = params[:booking][:created_by]
-        gparams[:account] = @scout_account
-        gparams[:accounting_number] = Booking.where(account_id: @scout_account).map {|b| b.accounting_number}.compact.max.to_i+1
-        gparams[:note1] = "Gutschrift Lagerkasse GL, Quittungsnr:"
-        gparams[:note2] = params[:booking][:accounting_number]
-
-        @booking2 = Booking.new(gparams)
+        
+        # wenn Lagerkasse, dann Gutschrift GL-Kasse
+        # @account = Account.find(params[:booking][:account_id])
+        @scout_account = Account.find_by_name('Gruppenleiterkasse')
+        @main_account = Account.find_by_name('Lagerkasse Bar')
+        @main_account_id = @main_account.id
+        @scout_account_id = @scout_account.id
+        @account_id = params[:booking][:account_id]
+        puts "test"
+        puts @main_account_id
+        puts @account_id
+        if (@account_id.to_s == @main_account_id.to_s)
+          gparams = {}
+          gparams[:amount] = value[:amount]
+          gparams[:date] = params[:booking][:date]
+          gparams[:created_by] = params[:booking][:created_by]
+          gparams[:account_id] = @scout_account_id
+          gparams[:accounting_number] = Booking.where(account_id: @scout_account_id).map {|b| b.accounting_number}.compact.max.to_i+1
+          gparams[:note1] = "Gutschrift Lagerkasse GL, Quittungsnr:"
+          gparams[:note2] = params[:booking][:accounting_number]
+  
+          @credit = Booking.new(gparams)
+        end
       end
     end
-        
+    
     # plus/minus Button Main-Booking
     if params[:booking][:sign] == 'minus'
       params[:booking][:amount] = - params[:booking][:amount].to_f
@@ -96,10 +103,11 @@ class BookingsController < ApplicationController
     params[:booking].delete :sign
     @booking = Booking.new(params[:booking].permit!)
 
-    if params[:booking][:account] == @main_account
-      if @booking.valid? and @booking2.valid?
+    # Meldung
+    if (@credit)
+      if @booking.valid? and @credit.valid?
         @booking.save
-        @booking2.save
+        @credit.save
         redirect_to :back, notice: "Buchung wurde von Lagerkasse in GL-Kasse gebucht."
       else
         redirect_to :back, notice: "Could not save the payment due to an error."
