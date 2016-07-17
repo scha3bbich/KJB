@@ -47,6 +47,10 @@
       .form-group
         = f.label number_to_currency 0.01
         = f.number_field '1ct', class: 'form-control count-input', value: @count['1ct']
+    .col-md-2 
+      .form-group
+        = f.label "plus"
+        = f.number_field 'other', class: 'form-control count-input', value: @count['other']
   .col-md-4
   .col-md-4
     %h4
@@ -75,7 +79,8 @@
       $("#count_20").val() * 20 +
       $("#count_50").val() * 50 +
       $("#count_100").val() * 100 +
-      $("#count_200").val() * 200
+      $("#count_200").val() * 200 +
+      $("#count_other").val() * 1
     $('.count-sum').val(sum);
     $("#count_cash").submit();
   };
