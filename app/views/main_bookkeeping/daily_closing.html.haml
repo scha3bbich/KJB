@@ -17,10 +17,11 @@
     %h4
       = number_to_currency @m_account_date_disbursement      
   .col-md-3
-    %h4
-      = t('pages.closing.drawback')
-    %h4
-      = number_to_currency @m_account_date_drawback
+    - if (@m_account_date_disbursement != 0)
+      %h4
+        = t('pages.closing.drawback')
+      %h4
+        = number_to_currency @m_account_date_drawback
   .col-md-3
     %button.btn.btn-primary{:onclick => "alert('Prost!'); return false;"}
       %span.glyphicon.glyphicon-ok{"aria-hidden" => "true"}
