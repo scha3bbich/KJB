@@ -8,6 +8,11 @@
       = @random.first_name
     %font
       = @name
-  .overview-name
-    %font
-      = number_to_currency @random.account_balance
+    - if @negative == true    
+      .overview-balance-negative
+        %font
+          = number_to_currency @random.account_balance
+    - else
+      .overview-balance-positive      
+        %font
+          = number_to_currency @random.account_balance

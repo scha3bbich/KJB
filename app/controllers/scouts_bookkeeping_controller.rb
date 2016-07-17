@@ -33,7 +33,12 @@ class ScoutsBookkeepingController < ApplicationController
 
   def overview
     @random = Scout.offset(rand(Scout.count)).first
-    @name = @random.last_name.chars.first
+    @name = @random.last_name.chars.first + '.'
+    if @random.account_balance < 0
+      @negative = true
+    else
+      @negative = false
+    end 
   end
 
   def billing
