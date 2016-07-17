@@ -1,4 +1,4 @@
-.fields
+.nested-fields
   .col-md-3.col-md-offset-2
     .form-group
       = f.label t('booking.account')
@@ -26,7 +26,9 @@
       = f.text_field "date", hidden: true, value: @date
       = f.text_field :created_by_id, hidden: true, value: @user.id
       = f.text_field "accounting_number", hidden: true, value: @accounting_number
-      -# = link_to_remove_association f, class: "btn btn-info" do 
-        -# %span.glyphicon.glyphicon-trash
+    .form-group
+      = f.label ' '
+      = link_to_remove_association f, class: "btn btn-info" do
+        %span.glyphicon.glyphicon-trash 
 
 
