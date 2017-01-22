@@ -14,7 +14,7 @@
           %label.btn.btn-default.active
             %input#option2{:autocomplete => "off", :name => "booking#{f.object_name[7..100]}[sign]", :value => "plus", :type => "radio", :checked => ""}
               %span.glyphicon.glyphicon-plus
-        = f.text_field "amount", data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: "form-control"
+        = f.text_field "amount", data: {autonumeric: {aSign: ' €', pSign: 's'}}, class: "form-control inter-sum-field"
   .col-md-4
     .form-group
       = f.label t('booking.note2')

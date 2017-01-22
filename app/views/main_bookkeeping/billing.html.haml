@@ -34,8 +34,12 @@
         = f.label t('booking.actions')
         = f.number_field :account_id, hidden: true, value: @m_account.id
         = f.submit t('buttons.send'), class: 'btn btn-primary'
-    .col-md-12
-      = link_to_add_association "Buchung hinzufügen", f, :sub_bookings, class: 'btn btn-info', role: 'button'
+    .col-md-4
+      = link_to_add_association "Buchung hinzufügen", f, :sub_bookings, class: 'btn btn-info new-booking-button', role: 'button'
+    .col-md-8.left
+      %span
+        Zwischensumme:
+      %span#inter-sum
        
 
 %br
@@ -90,5 +94,26 @@
             = c.created_by.name
           %td 
             = c.remarks
+
+:javascript
+  var initInterCount = function() {
+    console.log('init listener');
+    $('.inter-sum-field').unbind('change');
+    setTimeout(function() {
+      $('.inter-sum-field').change(function() {
+        var _interSum = 0.00;
+        $('.inter-sum-field').each(function() {
+           _interSum = _interSum + parseFloat($(this).val());
+        });
+        $('#inter-sum').text(_interSum);
+        $('#inter-sum').append(' &euro;');
+      });
+    }, 400);
+  }
+
+  $('.new-booking-button').click(function() {
+    console.log('new entry');
+    initInterCount();
+  });
 
         
