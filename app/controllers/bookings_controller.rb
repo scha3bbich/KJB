@@ -186,9 +186,9 @@ class BookingsController < ApplicationController
     child_account = Account.find_by_name('Kinderkasse')
     main_account = Account.find_by_name('Lagerkasse Bar')
     accounting_number = Booking.where(account_id: main_account).map {|b| b.accounting_number}.compact.max.to_i+1
-    @account_booking = Booking.new(bparams.merge(account: main_account, accounting_number: accounting_number, note1: "Ein-/Auszahlung", note2: 'Kinderkasse'))
+    @account_booking = Booking.new(bparams.merge(account: main_account, accounting_number: accounting_number, note1: "Ueberweisung", note2: 'Kinderkasse'))
     
-    @child_account_booking = Booking.new(bparams.merge(account: child_account, accounting_number: accounting_number, note1: "Ein-/Auszahlung", note2: 'Lagerkasse', amount: amount_child_account))
+    @child_account_booking = Booking.new(bparams.merge(account: child_account, accounting_number: accounting_number, note1: "Ueberweisung", note2: 'Lagerkasse', amount: amount_child_account))
   
     if @account_booking.valid? and @child_account_booking.valid?
       @account_booking.save
