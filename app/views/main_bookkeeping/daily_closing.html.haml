@@ -12,7 +12,7 @@
     %h4
       = number_to_currency @m_account_date_balance 
   .col-md-2
-    = form_for :main_bookkeeping, url: update_accounting_no_path, method: :post do |f|
+    = form_for :main_bookkeeping, url: m_update_accounting_no_path, method: :post do |f|
       .form-group 
         %h4 
           = t('pages.closing.accounting_no')

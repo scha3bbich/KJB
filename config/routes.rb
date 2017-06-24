@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'scouts_bookkeeping/scout_data/:scout_id' => 'scouts_bookkeeping#scout_data'
   get 'scouts_bookkeeping/reset_cash'
   get 'scouts_bookkeeping/personal_transfer'
+  post 'scouts_bookkeeping/update_accounting_no' => 'scouts_bookkeeping#update_accounting_no', as: :s_update_accounting_no
   
   post 'bookings/create_payment' => 'bookings#create_payment', as: :create_payment
   post 'bookings/create_transfer' => 'bookings#create_transfer', as: :create_transfer
@@ -50,7 +51,7 @@ Rails.application.routes.draw do
   post 'main_bookkeeping/save_cash'
   get 'main_bookkeeping/export'
   get 'main_bookkeeping/daily_closing'
-  post 'main_bookkeeping/update_accounting_no' => 'main_bookkeeping#update_accounting_no', as: :update_accounting_no
+  post 'main_bookkeeping/update_accounting_no' => 'main_bookkeeping#update_accounting_no', as: :m_update_accounting_no
   
   get 'main_bookkeeping/clear_disbursement'
   get 'main_bookkeeping/reset_cash'
