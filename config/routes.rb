@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   
   get 'statistics/index'
 
-  get 'children_bookkeeping/payment'
+  get 'children_bookkeeping/payment_in'
+  get 'children_bookkeeping/payment_out'
   get 'children_bookkeeping/export'
   get 'children_bookkeeping/transfer'
   get 'children_bookkeeping/child_data/:child_id' => 'shop#child_data'

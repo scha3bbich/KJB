@@ -71,6 +71,8 @@ de:
     children_bookkeeping:
       title: Kinder
       payment: Ein-/Auszahlungen
+      payment_in: Einzahlungen
+      payment_out: Auszahlungen
       
     count_cash:
       title: 'Kassenstand zählen'

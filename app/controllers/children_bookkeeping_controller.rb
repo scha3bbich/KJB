@@ -1,10 +1,17 @@
 class ChildrenBookkeepingController < ApplicationController
   
-  def payment
+  def payment_in
     @date = Date.strptime(session[:date], "%d.%m.%Y")
     @children_account = Account.find_by_name('Kinderkasse')
     @payments = Booking.where("note1 = ?", "Ein-/Auszahlung").where("note2 like ?", "%Kinderkasse%").where(date: @date)
   end
+  
+    def payment_out
+    @date = Date.strptime(session[:date], "%d.%m.%Y")
+    @children_account = Account.find_by_name('Kinderkasse')
+    @payments = Booking.where("note1 = ?", "Ein-/Auszahlung").where("note2 like ?", "%Kinderkasse%").where(date: @date)
+  end
+  
   
   def transfer
     @m_account = Account.find_by_name('Lagerkasse Bar')      
