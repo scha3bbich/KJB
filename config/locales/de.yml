@@ -90,6 +90,8 @@ de:
       drawback_fits: 'Rückgeld passt.'
       m_closing: 'Tagesabschluss Lagerkasse'
       s_closing: 'Tagesabschluss GL-Kasse'  
+      current_sum: 'Buchungssumme aktuell'
+      accounting_no: 'Buchungsnummer Berechnung'
   
     transfer:
       title: 'Überweisung'

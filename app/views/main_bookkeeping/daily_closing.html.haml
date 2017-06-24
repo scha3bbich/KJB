@@ -6,23 +6,38 @@
         %small= session[:date]
 
 .well.col-md-12
-  .col-md-3
+  .col-md-2
     %h4
       =t('booking.date_balance')
     %h4
-      = number_to_currency @m_account_date_balance   
-  .col-md-3    
+      = number_to_currency @m_account_date_balance 
+  .col-md-2
+    = form_for :main_bookkeeping, url: update_accounting_no_path, method: :post do |f|
+      .form-group 
+        %h4 
+          = t('pages.closing.accounting_no')
+        .col-md-8
+          = f.number_field :accounting_no, class: 'form-control count-input', value: session[:m_acct_accounting_no]
+        .col-md-1
+          = button_tag(type: "submit", class: "btn btn-primary") do
+            %span.glyphicon.glyphicon-arrow-right  
+  .col-md-2
+    %h4
+      =t('pages.closing.current_sum')
+    %h4
+      = number_to_currency @m_account_current_balance     
+  .col-md-2    
     %h4
       = t('pages.disbursement.title')
     %h4
       = number_to_currency @m_account_date_disbursement      
-  .col-md-3
+  .col-md-2
     - if (@m_account_date_disbursement != 0)
       %h4
         = t('pages.closing.drawback')
       %h4
-        = number_to_currency @m_account_date_drawback
-  .col-md-3
+        = number_to_currency @m_account_current_drawback
+  .col-md-2
     %button.btn.btn-primary{:onclick => "alert('Prost!'); return false;"}
       %span.glyphicon.glyphicon-ok{"aria-hidden" => "true"}
       = t('pages.closing.drawback_fits')

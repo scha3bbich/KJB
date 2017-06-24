@@ -50,6 +50,8 @@ Rails.application.routes.draw do
   post 'main_bookkeeping/save_cash'
   get 'main_bookkeeping/export'
   get 'main_bookkeeping/daily_closing'
+  post 'main_bookkeeping/update_accounting_no' => 'main_bookkeeping#update_accounting_no', as: :update_accounting_no
+  
   get 'main_bookkeeping/clear_disbursement'
   get 'main_bookkeeping/reset_cash'
   
