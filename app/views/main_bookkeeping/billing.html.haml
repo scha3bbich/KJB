@@ -91,7 +91,7 @@
           %td 
             = c.note2
           %td 
-            = c.created_by.name
+            = c.created_by ? c.created_by.name : c.created_by
           %td 
             = c.remarks
 
