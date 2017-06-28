@@ -4,48 +4,62 @@ class ImportController < ApplicationController
   end
   
   def upload
-    if params[:upload][:data] == 'children'
+    if params[:upload][:data] == 'children_tool_christian'
       @file = params[:upload][:file]
       if @file.content_type == "text/xml"
-        import_children_from_xml
+        import_children_tool_from_xml
       elsif @file.content_type == "text/csv"
-        import_children_from_csv
+        import_children_tool_from_csv
       else
         flash[:alert] = "Could not import the given file: unknown format"
       end
-    elsif params[:upload][:data] == 'scouts'
+    elsif params[:upload][:data] == 'scouts_tool_christian'
       @file = params[:upload][:file]
       if @file.content_type == "text/xml"
-        import_scouts_from_xml
+        import_scouts_tool_from_xml
       elsif @file.content_type == "text/csv"
-        import_scouts_from_csv
+        import_scouts_tool_from_csv
       else
         flash[:alert] = "Could not import the given file: unknown format"
       end      
-    elsif params[:upload][:data] == 'tents'
+    elsif params[:upload][:data] == 'tents_tool_christian'
       @file = params[:upload][:file]
       if @file.content_type == "text/xml"
-        import_tents_from_xml
+        import_tents_tool_from_xml
       elsif @file.content_type == "text/csv"
-        import_tents_from_csv
+        import_tents_tool_from_csv
       else
         flash[:alert] = "Could not import the given file: unknown format"
       end
-    elsif params[:upload][:data] == 'tent_members'
+    elsif params[:upload][:data] == 'tent_members_tool_christian'
       @file = params[:upload][:file]
       if @file.content_type == "text/xml"
-        import_tent_members_from_xml
+        import_tent_members_tool_from_xml
       elsif @file.content_type == "text/csv"
-        import_tent_members_from_csv
+        import_tent_members_tool_from_csv
       else
         flash[:alert] = "Could not import the given file: unknown format"
       end
+    elsif params[:upload][:data] == 'scouts_csv'
+      @file = params[:upload][:file]
+      if @file.content_type == "text/csv"
+        import_scouts_from_csv
+      else
+        flash[:alert] = "Could not import the given file: unknown format"
+      end
+    elsif params[:upload][:data] == 'children_csv'
+      @file = params[:upload][:file]
+      if @file.content_type == "text/csv"
+        import_children_from_csv
+      else
+        flash[:alert] = "Could not import the given file: unknown format"
+      end    
     end
     render :index
   end
   
 # Import Scouts  
-  def import_scouts_from_csv
+  def import_scouts_tool_from_csv
     @filecontent = @file.read
     @filecontent.force_encoding('UTF-8')
     @csv = CSV.new(@filecontent, headers: true, col_sep: ",")
@@ -63,7 +77,7 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
   
-  def import_scouts_from_xml
+  def import_scouts_tool_from_xml
     @filecontent = @file.read
     @data = Hash.from_xml @filecontent
     @data["RECORDS"]["RECORD"].each do |row|
@@ -80,7 +94,7 @@ class ImportController < ApplicationController
   end  
 
 # Import children  
-  def import_children_from_xml
+  def import_children_tool_from_xml
     @filecontent = @file.read
     @data = Hash.from_xml @filecontent
     @data["RECORDS"]["RECORD"].each do |row|
@@ -98,7 +112,7 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
   
-  def import_children_from_csv
+  def import_children_tool_from_csv
     @filecontent = @file.read
     @filecontent.force_encoding('UTF-8')
     @csv = CSV.new(@filecontent, headers: true, col_sep: ",", encoding: "UTF-8")
@@ -119,7 +133,7 @@ class ImportController < ApplicationController
   end
 
 # Import Tents  
-  def import_tents_from_csv
+  def import_tents_tool_from_csv
     @filecontent = @file.read
     @filecontent.force_encoding('UTF-8')
     @csv = CSV.new(@filecontent, headers: true, col_sep: ",", encoding: "UTF-8")
@@ -134,7 +148,7 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
 
-  def import_tents_from_xml
+  def import_tents_tool_from_xml
     @filecontent = @file.read
     @data = Hash.from_xml @filecontent
     @data["RECORDS"]["RECORD"].each do |row|
@@ -147,7 +161,7 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"    
   end
   
-  def import_tent_members_from_csv
+  def import_tent_members_tool_from_csv
     @filecontent = @file.read
     @filecontent.force_encoding('UTF-8')
     @csv = CSV.new(@filecontent, headers: true, col_sep: ",", encoding: "UTF-8")
@@ -161,7 +175,7 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
   
-  def import_tent_members_from_xml
+  def import_tent_members_tool_from_xml
     @filecontent = @file.read
     @data = Hash.from_xml @filecontent
     @data["RECORDS"]["RECORD"].each do |row|
@@ -171,6 +185,41 @@ class ImportController < ApplicationController
       child.save
     end
     flash[:notice] = "Import successful"    
+  end
+  
+  def import_scouts_from_csv
+    @filecontent = @file.read
+    @filecontent.force_encoding('UTF-8')
+    @csv = CSV.new(@filecontent, headers: true, col_sep: ";")
+    @content = @csv.to_a.map {|row| row.to_hash }
+    @content.each do |row|
+      data = {
+        first_name: row["Vorname"],
+        last_name: row["Nachname"],
+        birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%d.%m.%Y')
+      }
+      scout = Scout.create(data)
+    end
+    flash[:notice] = "Import successful"
+  end
+  
+  def import_children_from_csv
+    @filecontent = @file.read
+    @filecontent.force_encoding('UTF-8')
+    @csv = CSV.new(@filecontent, headers: true, col_sep: ";", encoding: "UTF-8")
+    @content = @csv.to_a.map {|row| row.to_hash }
+    @content.each do |row|
+      data = {
+        first_name: row["Vorname"],
+        last_name: row["Nachname"],
+        birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%d.%m.%Y')
+      }
+      tent = Tent.find_by_number(row["Zelt"])
+      child = Child.create(data)
+      child.tent = tent
+      child.save
+    end
+    flash[:notice] = "Import successful"
   end
   
 end

@@ -21,6 +21,11 @@ User.delete_all
 User.create([{name: 'Annalena'}, {name: 'Tobias'}, {name: 'Johannes'}, {name: 'Gast'}])
 
 Tent.delete_all
+Tent.create([{number: '1', name: 'Zelt 1'}, {number: '2', name: 'Zelt 2'}, {number: '3', name: 'Zelt 3'}, {number: '4', name: 'Zelt 4'}, {number: '5', name: 'Zelt 5'}, 
+  {number: '6', name: 'Zelt 6'}, {number: '7', name: 'Zelt 7'}, {number: '8', name: 'Zelt 8'}, {number: '9', name: 'Zelt 9'}, {number: '10', name: 'Zelt 10'}, 
+  {number: '11', name: 'Zelt 11'}, {number: '12', name: 'Zelt 12'}, {number: '13', name: 'Zelt 13'}, {number: '14', name: 'Zelt 14'}, {number: '15', name: 'Zelt 15'}, 
+  {number: '16', name: 'Zelt 16'}, {number: '17', name: 'Zelt 17'}, {number: '18', name: 'Zelt 18'}, ])
+
 Scout.delete_all
 Child.delete_all
 

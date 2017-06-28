@@ -8,10 +8,26 @@
     = f.radio_button :data, :scouts
     = f.label "Gruleis"
     %br
-    = f.radio_button :data, :tents
-    = f.label "Zelte"
     %br
-    = f.radio_button :data, :tent_members
-    = f.label "Zeltmitgliedschaften"
+    = f.radio_button :data, :children_csv
+    = f.label "Kinder (CSV)"
+    %br
+    = f.radio_button :data, :scouts_csv
+    = f.label "Gruleis (CSV)"
+    %br
+    = f.radio_button :data, :children_tool_christian
+    = f.label "Kinder (Tool Christian)"
+    %br
+    = f.radio_button :data, :scouts_tool_christian
+    = f.label "Gruleis (Tool Christian)"
+    %br
+    = f.radio_button :data, :tents_tool_christian
+    = f.label "Zelte (Tool Christian)"
+    %br
+    = f.radio_button :data, :tent_members_tool_christian
+    = f.label "Zeltmitgliedschaften (Tool Christian)"
+    %br
+    %br
     = f.file_field :file
+    %br
     = f.submit "Upload"
