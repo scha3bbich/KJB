@@ -41,7 +41,16 @@ class ScoutsController < ApplicationController
   # POST /scouts
   # POST /scouts.json
   def create
-    @scout = Scout.new(scout_params)
+    @scout = Scout.create(scout_params)
+
+    d = Date.parse(Setting.find_by(key: :start_date).value)
+    for d in (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)) do
+      pparams = {}
+      pparams[:scout] = @scout
+      pparams[:date] = d
+      pparams[:attending] = true
+      Attendance.create(pparams)
+    end
 
     respond_to do |format|
       if @scout.save
@@ -72,6 +81,9 @@ class ScoutsController < ApplicationController
   # DELETE /scouts/1.json
   def destroy
     @scout.destroy
+    Attendance.where(scout: @scout).each do |a|
+      a.destroy
+    end
     respond_to do |format|
       format.html { redirect_to scouts_url, notice: 'Scout was successfully destroyed.' }
       format.json { head :no_content }

@@ -15,6 +15,8 @@ MainAccount.delete_all
 ScoutAccount.delete_all
 ChildAccount.delete_all
 
+Attendance.delete_all
+
 MainAccount.create([{name: 'Lagerkasse Bar'}, {name: 'Gruppenleiterkasse Girokonto'}, {name: 'Gruppenleiterkasse'}, {name: 'Kinderkasse'}])
 
 User.delete_all

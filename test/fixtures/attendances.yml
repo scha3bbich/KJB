@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-06-28
+  scout_id: 
+  attending: false
+
+two:
+  date: 2017-06-28
+  scout_id: 
+  attending: false

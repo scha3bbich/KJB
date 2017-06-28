@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :attendances
   get 'statistics/index'
 
   get 'children_bookkeeping/payment_in'
