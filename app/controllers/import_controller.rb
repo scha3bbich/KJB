@@ -54,6 +54,24 @@ class ImportController < ApplicationController
       else
         flash[:alert] = "Could not import the given file: unknown format"
       end    
+    elsif params[:upload][:data] == 'scouts'
+      @file = params[:upload][:file]
+      case File.extname(@file.original_filename)
+        when ".csv" then import_scouts
+        when ".xls" then import_scouts
+        when ".xlsx" then import_scouts
+      else
+        flash[:alert] = "Could not import the given file: unknown format"
+      end
+    elsif params[:upload][:data] == 'children'
+      @file = params[:upload][:file]
+      case File.extname(@file.original_filename)
+        when ".csv" then import_children
+        when ".xls" then import_children
+        when ".xlsx" then import_children
+      else
+        flash[:alert] = "Could not import the given file: unknown format"
+      end  
     end
     render :index
   end
@@ -222,4 +240,53 @@ class ImportController < ApplicationController
     flash[:notice] = "Import successful"
   end
   
+  def import_scouts
+    def open_spreadsheet(file)
+      case File.extname(file.original_filename)
+        when ".csv" then Roo::CSV.new(file.path, nil, :ignore)
+        when ".xls" then Roo::Excel.new(file.path, packed: false, file_warning: :ignore)
+        when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+        else raise "Unknown file type: #{file.original_filename}"
+      end
+    end
+    spreadsheet = open_spreadsheet(@file)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      data = {
+        first_name: row["Vorname"],
+        last_name: row["Nachname"],
+        birthday: Date.parse(row["Geburtsdatum"].to_s)
+      }
+      scout = Scout.create(data)
+    end
+    flash[:notice] = "Import successful"
+  end
+  
+  def import_children
+    def open_spreadsheet(file)
+      case File.extname(file.original_filename)
+        when ".csv" then Roo::CSV.new(file.path, nil, :ignore)
+        when ".xls" then Roo::Excel.new(file.path, packed: false, file_warning: :ignore)
+        when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+        else raise "Unknown file type: #{file.original_filename}"
+      end
+    end
+    spreadsheet = open_spreadsheet(@file)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      data = {
+        first_name: row["Vorname"],
+        last_name: row["Nachname"],
+        birthday: Date.parse(row["Geburtsdatum"].to_s),
+        #tent_id: row["Zelt"]
+      }
+      tent = Tent.find_by_number(row["Zelt"])
+      child = Child.create(data)
+      child.tent = tent
+      child.save
+    end
+    flash[:notice] = "Import successful"
+  end
 end
