@@ -42,13 +42,18 @@ class AttendancesController < ApplicationController
   def update
     respond_to do |format|
       if @attendance.update(attendance_params)
-        format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
+        format.html { redirect_to :back, notice: 'Attendance was successfully updated.' }
         format.json { render :show, status: :ok, location: @attendance }
       else
         format.html { render :edit }
         format.json { render json: @attendance.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def change
+    @attendance = Attendance.find(params[:attendance_id])
+    @scout = @attendance.scout
   end
 
   # DELETE /attendances/1

@@ -10,6 +10,7 @@ class ScoutsController < ApplicationController
   # GET /scouts/1
   # GET /scouts/1.json
   def show
+    @attendances = Attendance.where(scout: @scout)
     respond_to do |format|
       format.html { render :show }
       format.pdf {
