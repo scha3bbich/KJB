@@ -74,4 +74,9 @@
           -# %td= number_to_currency c.scout.account_balance
           
           
+.well
+  %p nicht anwesend:
+  %p
+    - @scouts_not_attending.each do |scout|
+      = scout.full_name
 

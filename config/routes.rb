@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  resources :attendances 
+  get 'attendances/:attendance_id/change' => 'attendances#change', as: :change_attendance
+  
   get 'statistics/index'
 
   get 'children_bookkeeping/payment_in'

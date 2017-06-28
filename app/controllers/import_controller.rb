@@ -90,6 +90,15 @@ class ImportController < ApplicationController
           birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%m/%d/%Y')
         }
         scout = Scout.create(data)
+        #create attendances for scouts
+        d = Date.parse(Setting.find_by(key: :start_date).value)
+        for d in (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)) do
+          pparams = {}
+          pparams[:scout] = scout
+          pparams[:date] = d
+          pparams[:attending] = true
+          Attendance.create(pparams)
+        end
       end
     end
     flash[:notice] = "Import successful"
@@ -106,6 +115,15 @@ class ImportController < ApplicationController
             birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%m/%d/%Y')
           }
         scout = Scout.create(data)
+        #create attendances for scouts
+        d = Date.parse(Setting.find_by(key: :start_date).value)
+        for d in (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)) do
+          pparams = {}
+          pparams[:scout] = scout
+          pparams[:date] = d
+          pparams[:attending] = true
+          Attendance.create(pparams)
+        end
       end
     end
     flash[:notice] = "Import successful"
@@ -217,6 +235,15 @@ class ImportController < ApplicationController
         birthday: Date.strptime(row["Geburtsdatum"].split(' ')[0], '%d.%m.%Y')
       }
       scout = Scout.create(data)
+      #create attendances for scouts
+      d = Date.parse(Setting.find_by(key: :start_date).value)
+      for d in (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)) do
+        pparams = {}
+        pparams[:scout] = scout
+        pparams[:date] = d
+        pparams[:attending] = true
+        Attendance.create(pparams)
+      end
     end
     flash[:notice] = "Import successful"
   end
@@ -259,6 +286,15 @@ class ImportController < ApplicationController
         birthday: Date.parse(row["Geburtsdatum"].to_s)
       }
       scout = Scout.create(data)
+      #create attendances for scouts
+      d = Date.parse(Setting.find_by(key: :start_date).value)
+      for d in (Date.parse(Setting.find_by(key: :start_date).value)..Date.parse(Setting.find_by(key: :end_date).value)) do
+        pparams = {}
+        pparams[:scout] = scout
+        pparams[:date] = d
+        pparams[:attending] = true
+        Attendance.create(pparams)
+      end
     end
     flash[:notice] = "Import successful"
   end

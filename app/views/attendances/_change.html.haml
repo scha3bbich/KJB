@@ -1,0 +1,13 @@
+= form_for @attendance do |f|
+  .field
+    = f.label :date
+    = f.text_field :date, class: 'form-control', readonly: true
+  .field
+    = f.label :scout
+    = f.text_field :scout, value: @attendance.scout.full_name, class: 'form-control', readonly: true
+  .field
+    = f.label :attending
+    = f.check_box :attending
+  .actions
+    .btn-group
+      = f.submit 'Speichern', class: "btn btn-default"

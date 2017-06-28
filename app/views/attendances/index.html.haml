@@ -1,0 +1,32 @@
+.row
+  .col-md-10
+    %h1.page-header
+      Listing attendances
+  .col-md-2
+    %br
+    %br
+    .btn-group
+      = link_to 'New Attendance', new_attendance_path, class: "btn btn-primary"
+
+%table.table.table-bordered.table-condensed.table-hover
+  %thead
+    %tr
+      %th Date
+      %th Scout
+      %th Attending
+      %th
+
+  %tbody
+    - @attendances.each do |attendance|
+      %tr
+        %td= attendance.date
+        %td
+          - if attendance.scout
+            = link_to attendance.scout.full_name, attendance.scout
+        %td= attendance.attending
+        %td
+          .btn-group
+            = link_to edit_attendance_path(attendance), class: "btn btn-default btn-xs" do
+              %span.glyphicon.glyphicon-edit
+            = link_to attendance, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-danger btn-xs" do
+              %span.glyphicon.glyphicon-trash

@@ -93,7 +93,10 @@ class ScoutsBookkeepingController < ApplicationController
   def input
     date = Date.strptime(session[:date], "%d.%m.%Y")
     @scout_consumptions = ScoutConsumption.where(date: date).joins(:scout)
-    @scouts = Scout.all - @scout_consumptions.map {|sc| sc.scout}
+    @scout_attendance = Attendance.where(date: date).where(attending: true).joins(:scout)
+    @scouts_attending = @scout_attendance.map {|sc| sc.scout}
+    @scouts_not_attending = Scout.all - @scouts_attending
+    @scouts = @scouts_attending - @scout_consumptions.map {|sc| sc.scout}
   end
   
   def new_entry

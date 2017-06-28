@@ -42,5 +42,5 @@ class Scout < ActiveRecord::Base
   def corn_consumption
     self.scout_consumptions.sum(:corn)
   end
-
+  
 end
