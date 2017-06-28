@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
   # GET /attendances
   # GET /attendances.json
   def index
-    @attendances = Attendance.all
+    @attendances = Attendance.includes(:scout).order("date").order("scouts.last_name")
   end
 
   # GET /attendances/1

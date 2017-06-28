@@ -74,4 +74,9 @@
           -# %td= number_to_currency c.scout.account_balance
           
           
+.well
+  %p nicht anwesend
+  %p
+    - @scouts_not_attending.each do |scout|
+      = link_to scout.full_name, new_scout_consumption_path(scout), method: :post
 
