@@ -12,106 +12,105 @@
     = link_to 'Bearbeiten', edit_scout_path(@scout), class: "btn btn-primary"
     = link_to 'Export', export_scout_path(@scout), class: "btn btn-info"
 
-.row  
-  .col-md-5
-    - if @scout.tent
-      %h2
-        %b 
-          Zelt
-          = @scout.tent.number
-      %p
-        %b= @scout.tent.scouts.map {|a| a.first_name}.join(', ')
-      %p
-        %ul
-        - @scout.tent.children.each do |child|
-          %li= child.full_name
-    - else
-      Zelt Zuteilung fehlt
-  
-  .col-md-5
+ 
+.col-md-5
+  - if @scout.tent
     %h2
-      Guthaben:
-      = number_to_currency @scout.account_balance
+      %b 
+        Zelt
+        = @scout.tent.number
+    %p
+      %b= @scout.tent.scouts.map {|a| a.first_name}.join(', ')
+    %p
+      %ul
+      - @scout.tent.children.each do |child|
+        %li= child.full_name
+  - else
+    Zelt Zuteilung fehlt
+
+.col-md-5
+  %h2
+    Guthaben:
+    = number_to_currency @scout.account_balance
 
 %br
-.row
-  .col-md-5
-    %h3 Buchungen
-    %table.table.table-condensed.table-bordered
-      %thead
-        %tr
-          %th Datum
-          %th Betrag
-          %th Buchungsart
-          %th Bemerkung
-  
-      %tbody
-        - @scout.account.bookings.each do |booking|
-          %tr
-            %td= booking.date.strftime "%d.%m.%Y"
-            %td= number_to_currency booking.amount
-            %td= booking.note1
-            %td= booking.note2
-  
-  .col-md-4
-    %h3 Verbrauch
-    %table.table.table-condensed.table-bordered
-      %thead
-        %tr
-          %th Datum
-          %th Betrag
-          
-      %tbody
-        - @scout.scout_consumptions.each do |consumption|
-          %tr
-            %td= consumption.date.strftime "%d.%m.%Y"
-            %td= number_to_currency consumption.total
+.col-md-5
+  %h3 Buchungen
+  %table.table.table-condensed.table-bordered
+    %thead
+      %tr
+        %th Datum
+        %th Betrag
+        %th Buchungsart
+        %th Bemerkung
 
-  .col-md-2
-    %h3 Anwesenheit
-    %table.table.table-condensed.table-bordered
-      %thead
+    %tbody
+      - @scout.account.bookings.each do |booking|
         %tr
-          %th Datum
-          %th anwesend
-          %th 
-          
-      %tbody
-        - @attendances.each do |attendance|
-          %tr
-            %td= attendance.date.strftime "%d.%m.%Y"
-            %td= attendance.attending
-            %td
-              .btn-group
-                = link_to change_attendance_path(attendance), class: "btn btn-default btn-xs" do
-                  %span.glyphicon.glyphicon-edit
+          %td= booking.date.strftime "%d.%m.%Y"
+          %td= number_to_currency booking.amount
+          %td= booking.note1
+          %td= booking.note2
 
-%br
-.row   
-  .col-md-3
-    %h3 Statistik
-    %table.table.table-condensed.table-bordered
-      %thead
-        %tr
-          %th was
-          %th wieviel
-      
-      %tbody
-        %tr
-          %td Bier
-          %td= @scout.beer_consumption
-        %tr
-          %td Anti
-          %td= @scout.soft_drink_consumption
-        %tr
-          %td Wurst
-          %td= @scout.sausage_consumption
-        %tr
-          %td Schwein
-          %td= @scout.pork_consumption
-        %tr
-          %td Pute
-          %td= @scout.turkey_consumption
-        %tr
-          %td Mais
-          %td= @scout.corn_consumption
+.col-md-6
+  .row 
+    .col-md-9
+      %h3 Statistik
+      %table.table.table-condensed.table-bordered
+        %thead
+          %tr
+            %th was
+            %th wieviel
+        
+        %tbody
+          %tr
+            %td Bier
+            %td= @scout.beer_consumption
+          %tr
+            %td Anti
+            %td= @scout.soft_drink_consumption
+          %tr
+            %td Wurst
+            %td= @scout.sausage_consumption
+          %tr
+            %td Schwein
+            %td= @scout.pork_consumption
+          %tr
+            %td Pute
+            %td= @scout.turkey_consumption
+          %tr
+            %td Mais
+            %td= @scout.corn_consumption
+  .row
+    .col-md-5
+      %h3 Verbrauch
+      %table.table.table-condensed.table-bordered
+        %thead
+          %tr
+            %th Datum
+            %th Betrag
+            
+        %tbody
+          - @scout.scout_consumptions.each do |consumption|
+            %tr
+              %td= consumption.date.strftime "%d.%m.%Y"
+              %td= number_to_currency consumption.total
+    
+    .col-md-2
+      %h3 Anwesenheit
+      %table.table.table-condensed.table-bordered
+        %thead
+          %tr
+            %th Datum
+            %th anwesend
+            %th 
+        
+        %tbody
+          - @attendances.each do |attendance|
+            %tr
+              %td= attendance.date.strftime "%d.%m.%Y"
+              %td= check_box_tag attendance.attending, "1", attendance.attending, disabled: true
+              %td
+                .btn-group
+                  = link_to change_attendance_path(attendance), class: "btn btn-default btn-xs" do
+                    %span.glyphicon.glyphicon-edit
