@@ -240,6 +240,37 @@ class BookingsController < ApplicationController
     end  
   end
 
+  def create_allocation
+    pp = params[:booking]
+    bparams = {}
+    bparams[:created_by] = User.find_by_name(session[:user])
+    bparams[:date] = pp[:date]
+    bparams[:remarks] = pp[:remarks]
+    bparams[:note1] = "Umlage"
+    bparams[:note2] = pp[:note2]
+    bparams[:accounting_number] = 0
+    if pp[:sign] == "minus"
+      pp[:amount] = - pp[:amount].to_f
+    end
+    
+    no_of_accounts = params['scout'].length
+    bparams[:amount] = pp[:amount].to_f/no_of_accounts.to_i
+    
+    @scouts_checked = Scout.where(id: params['scout'])
+    @scout_names = Array.new
+    
+    @scouts_checked.each do |s|
+      account_id = s.account.account.id
+      bparams[:account_id] = account_id
+      @booking = Booking.new(bparams) 
+      if @booking.valid?
+        @booking.save
+      end
+      @scout_names << s.full_name
+    end  
+    redirect_to :back, notice: "Allocation created for #{no_of_accounts} people: #{@scout_names}"    
+  end
+
   # DELETE /bookings/1
   # DELETE /bookings/1.json
   def destroy
