@@ -192,6 +192,11 @@ class ScoutsBookkeepingController < ApplicationController
     @scout = Scout.find(params[:scout_id])
   end
   
+  def cost_allocation
+    @booking = Booking.new
+    @scouts = Scout.all
+  end  
+  
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def good_params

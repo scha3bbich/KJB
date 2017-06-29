@@ -1,0 +1,45 @@
+.page-header
+  %h1 Umlage
+
+.well.col-md-12
+  %h5 (Nur Buchungen auf Gruppenleiterkonten werden gebucht, nicht die Gruppenleiterkasse!)
+
+.well.col-md-12
+  = form_for :booking, url: create_allocation_path, method: :post do |f|
+    
+    .col-md-2
+      .form-group
+        = f.label "Datum"
+        = f.date_field:date, :value => Date.strptime(session[:date], "%d.%m.%Y"), class: "form-control"
+        
+    .col-md-2
+      .form-group
+        = f.label t('booking.amount')
+        .input-group
+          %span.input-group-btn{"data-toggle" => "buttons"}
+            %label.btn.btn-default.active
+              %input#option1{:autocomplete => "off", :checked => "", :name => 'booking[sign]', :value => "minus", :type => "radio"}
+                %span.glyphicon.glyphicon-minus
+            %label.btn.btn-default
+              %input#option2{:autocomplete => "off", :name => 'booking[sign]', :value => "plus", :type => "radio"}
+                %span.glyphicon.glyphicon-plus
+          = f.text_field :amount, class: "form-control"
+
+    .col-md-4
+      .form-group
+        = f.label t('booking.note2')
+        = f.text_field :note2, class: "form-control"
+    .col-md-3
+      .form-group
+        = f.label t('booking.remarks')
+        = f.text_field :remarks, class: "form-control"
+    .col-md-10
+      - @scouts.each do |s|
+        = check_box_tag "scout[]", s.id
+        = s.full_name
+        %br
+    %br
+    .col-md-1
+      .form-group
+        = f.label t('booking.actions')
+        = f.submit t('buttons.send'), class: 'btn btn-primary'

@@ -38,6 +38,7 @@ de:
       title2: 'Gruppenleiter'
       billing: 'Abrechnung'
       overview: 'Kontostand'
+      overview.balance: 'Übersicht Kontostände'
       overview_consumption: 'Übersicht Verbrauch'
       index: 'Übersicht Kasse'
       input: 'Verbrauch eingeben'
@@ -47,6 +48,7 @@ de:
       consumption: 'Verbrauch'
       payment: 'Ein-/Auszahlung GL'
       no_consumption: 'Bisher nicht angegeben:'
+      allocation: 'Umlage'
       
     disbursement:
       title: 'ausgelegtes Geld'
