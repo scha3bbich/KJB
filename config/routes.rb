@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
   
+  resources :attendances 
+  get 'attendances/:attendance_id/change' => 'attendances#change', as: :change_attendance
+  
   get 'statistics/index'
 
-  get 'children_bookkeeping/payment'
+  get 'children_bookkeeping/payment_in'
+  get 'children_bookkeeping/payment_out'
   get 'children_bookkeeping/export'
   get 'children_bookkeeping/transfer'
   get 'children_bookkeeping/child_data/:child_id' => 'shop#child_data'
@@ -34,11 +38,14 @@ Rails.application.routes.draw do
   get 'scouts_bookkeeping/scout_data/:scout_id' => 'scouts_bookkeeping#scout_data'
   get 'scouts_bookkeeping/reset_cash'
   get 'scouts_bookkeeping/personal_transfer'
+  post 'scouts_bookkeeping/update_accounting_no' => 'scouts_bookkeeping#update_accounting_no', as: :s_update_accounting_no
+  get 'scouts_bookkeeping/cost_allocation'
   
   post 'bookings/create_payment' => 'bookings#create_payment', as: :create_payment
   post 'bookings/create_transfer' => 'bookings#create_transfer', as: :create_transfer
   post 'bookings/create_billing' => 'bookings#create_billing', as: :create_billing
   post 'bookings/create_personal_transfer' => 'bookings#create_personal_transfer', as: :create_personal_transfer
+  post 'bookings/create_allocation' => 'bookings#create_allocation', as: :create_allocation
   
   post 'scouts_bookkeeping/new_entry/:scout_id' => 'scouts_bookkeeping#new_entry', as: :new_scout_consumption
   patch 'scouts_bookkeeping/update_entry/:scout_consumption_id' => 'scouts_bookkeeping#update_entry', as: :update_scout_consumption
@@ -49,6 +56,8 @@ Rails.application.routes.draw do
   post 'main_bookkeeping/save_cash'
   get 'main_bookkeeping/export'
   get 'main_bookkeeping/daily_closing'
+  post 'main_bookkeeping/update_accounting_no' => 'main_bookkeeping#update_accounting_no', as: :m_update_accounting_no
+  
   get 'main_bookkeeping/clear_disbursement'
   get 'main_bookkeeping/reset_cash'
   

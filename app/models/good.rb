@@ -28,6 +28,9 @@ class Good < ActiveRecord::Base
       # if no pricetag found that has been set before the current date use the oldest one in the db
       pricetag = Good.where(type: type).order(date: "ASC").first
     end
-    pricetag.price
+    if not pricetag
+      return 0.0
+    end
+    return pricetag.price
   end
 end

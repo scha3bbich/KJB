@@ -1,6 +1,6 @@
 .page-header.col-md-12
   %h1
-    = t('pages.children_bookkeeping.payment')
+    = t('pages.children_bookkeeping.payment_in')
     %small= session[:date]
           
 .well.col-md-12
@@ -24,7 +24,7 @@
       
       .form-group
         = f.label t('booking.payment.title')
-        = f.collection_select(:payment_type, {in: 'Einzahlung', out: 'Auszahlung'}, :first, :last, {}, class: "form-control")
+        = f.collection_select(:payment_type, {out: 'Auszahlung'}, :first, :last, {}, class: "form-control", readonly: true)
     .col-md-3
       .form-group
         = f.label t('booking.account')

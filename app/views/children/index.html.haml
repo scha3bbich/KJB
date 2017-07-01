@@ -35,8 +35,8 @@
         %td= child.number
         %td= link_to child.first_name, child
         %td= link_to child.last_name, child
-        %td= child.birthday.strftime "%d.%m.%Y"
-        %td= child.age  
+        %td= child.birthday ? child.birthday.strftime("%d.%m.%Y") : child.birthday
+        %td= child.birthday ? child.age : child.birthday 
         %td
           - if child.tent
             = link_to "Zelt #{child.tent.number}", child.tent

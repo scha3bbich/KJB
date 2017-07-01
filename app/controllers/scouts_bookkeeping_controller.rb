@@ -93,7 +93,10 @@ class ScoutsBookkeepingController < ApplicationController
   def input
     date = Date.strptime(session[:date], "%d.%m.%Y")
     @scout_consumptions = ScoutConsumption.where(date: date).joins(:scout)
-    @scouts = Scout.all - @scout_consumptions.map {|sc| sc.scout}
+    @scout_attendance = Attendance.where(date: date).where(attending: true).joins(:scout)
+    @scouts_attending = @scout_attendance.map {|sc| sc.scout}
+    @scouts_not_attending = Scout.all - @scouts_attending
+    @scouts = @scouts_attending - @scout_consumptions.map {|sc| sc.scout}
   end
   
   def new_entry
@@ -134,16 +137,47 @@ class ScoutsBookkeepingController < ApplicationController
     @s_account_balance = Booking.where(account: @s_account).sum(:amount)
     
     @s_account_date_balance = Booking.where(["date = ?", @date]).where(account: @s_account).where("note1 != ?", "Ein-/Auszahlung").sum(:amount)   
+    
+    @s_account_date_first_booking = Booking.where(["date = ?", @date]).where(account: @s_account).where("note1 != ?", "Ein-/Auszahlung").first
+    #setze Buchungsnummer auf die erste des Tages, falls leer
+    if session[:s_acct_accounting_no].blank?
+      if @s_account_date_first_booking.blank?
+        session[:s_acct_accounting_no] = 1
+      else 
+        session[:s_acct_accounting_no] = @s_account_date_first_booking[:accounting_number]
+      end
+    end
+    def booking_sum(account, accounting_no)
+      sum = 0.0
+      bookings = Booking.where(account: account).each do |b|
+        if b.accounting_number.to_i >= accounting_no.to_i
+          sum += b.amount
+        end
+      end
+      return sum
+    end
+    @s_account_current_balance = booking_sum(@s_account, session[:s_acct_accounting_no])
+    
     @s_account_date_disbursements = Disbursement.where(["date = ?", @date]).where(account: @s_account).where(cleared: false).sum(:amount)
     @s_account_date_drawback = @s_account_date_disbursements + @s_account_date_balance
+    @s_account_current_drawback = @s_account_date_disbursements + @s_account_current_balance
     
     @count = session[:scouts_account_cash] || {}
+  end
+  
+  def update_accounting_no
+    pp = params[:scouts_bookkeeping]
+    session[:s_acct_accounting_no] = pp[:accounting_no]
+    redirect_to scouts_bookkeeping_daily_closing_path
   end
   
   def clear_disbursement
     @date = Date.strptime(session[:date], "%d.%m.%Y")
     @s_account = Account.find_by_name('Gruppenleiterkasse')    
     @s_account_date_disbursements = Disbursement.where(["date = ?", @date]).where(account: @s_account)
+    
+    @s_account_date_last_booking = Booking.where(["date = ?", @date]).where(account: @s_account).where("note1 != ?", "Ein-/Auszahlung").last
+    session[:s_acct_accounting_no] = @s_account_date_last_booking[:accounting_number].to_i + 1
     
     @s_account_date_disbursements.each do |e| 
       e.update('cleared' => true)
@@ -157,6 +191,11 @@ class ScoutsBookkeepingController < ApplicationController
   def scout_data
     @scout = Scout.find(params[:scout_id])
   end
+  
+  def cost_allocation
+    @booking = Booking.new
+    @scouts = Scout.all
+  end  
   
   private
     # Never trust parameters from the scary internet, only allow the white list through.

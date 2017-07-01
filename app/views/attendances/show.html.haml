@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Date:
+  = @attendance.date
+%p
+  %b Scout:
+  = @attendance.scout
+%p
+  %b Attending:
+  = @attendance.attending
+
+= link_to 'Edit', edit_attendance_path(@attendance)
+\|
+= link_to 'Back', attendances_path

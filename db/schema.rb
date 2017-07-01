@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730183836) do
+ActiveRecord::Schema.define(version: 20170628090033) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20150730183836) do
     t.integer  "actable_id"
     t.string   "actable_type"
   end
+
+  create_table "attendances", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "scout_id"
+    t.boolean  "attending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "attendances", ["scout_id"], name: "index_attendances_on_scout_id"
 
   create_table "bookings", force: :cascade do |t|
     t.date     "date"

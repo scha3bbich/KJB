@@ -58,9 +58,30 @@ class MainBookkeepingController < ApplicationController
     
     @m_c_account_sum = @m_account_balance + @c_account_balance
     
-    @m_account_date_balance = Booking.where(["date = ?", @date]).where(account: @m_account).where("note1 != ?", "Ein-/Auszahlung").sum(:amount)   
+    @m_account_date_balance = Booking.where(["date = ?", @date]).where(account: @m_account).where("note1 != ?", "Ein-/Auszahlung").sum(:amount) 
+    @m_account_date_first_booking = Booking.where(["date = ?", @date]).where(account: @m_account).where("note1 != ?", "Ein-/Auszahlung").first
+    #setze Buchungsnummer auf die erste des Tages, falls leer
+    if session[:m_acct_accounting_no].blank?
+      if @m_account_date_first_booking.blank?
+        session[:m_acct_accounting_no] = 1
+      else 
+        session[:m_acct_accounting_no] = @m_account_date_first_booking[:accounting_number]
+      end
+    end
+    def booking_sum(account, accounting_no)
+      sum = 0.0
+      bookings = Booking.where(account: account).each do |b|
+        if b.accounting_number.to_i >= accounting_no.to_i
+          sum += b.amount
+        end
+      end
+      return sum
+    end
+    @m_account_current_balance = booking_sum(@m_account, session[:m_acct_accounting_no])
+      
     @m_account_date_disbursement = Disbursement.where(["date = ?", @date]).where(account: @m_account).where(cleared: false).sum(:amount)
     @m_account_date_drawback = @m_account_date_disbursement + @m_account_date_balance
+    @m_account_current_drawback = @m_account_date_disbursement + @m_account_current_balance
     
     @m_account_date_disbursements = Disbursement.where(["date = ?", @date]).where(account: @m_account)
 
@@ -68,10 +89,19 @@ class MainBookkeepingController < ApplicationController
     @count = session[:main_account_cash] || {}
   end
   
+  def update_accounting_no
+    pp = params[:main_bookkeeping]
+    session[:m_acct_accounting_no] = pp[:accounting_no]
+    redirect_to main_bookkeeping_daily_closing_path
+  end
+  
   def clear_disbursement
     @date = Date.strptime(session[:date], "%d.%m.%Y")
     @m_account = Account.find_by_name('Lagerkasse Bar')    
     @m_account_date_disbursements = Disbursement.where(["date = ?", @date]).where(account: @m_account)
+    
+    @m_account_date_last_booking = Booking.where(["date = ?", @date]).where(account: @m_account).where("note1 != ?", "Ein-/Auszahlung").last
+    session[:m_acct_accounting_no] = @m_account_date_last_booking[:accounting_number].to_i + 1
     
     @m_account_date_disbursements.each do |e| 
       e.update('cleared' => true)
