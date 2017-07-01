@@ -20,6 +20,9 @@ gem 'yaml_db'
 #mysql
 gem 'mysql'
 
+gem 'mysql2', '~> 0.3.18'
+# gem 'mysql2', '>=0.3.20'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
